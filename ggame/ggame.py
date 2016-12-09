@@ -107,6 +107,12 @@ try:
 except:
     from sysdeps import *
 
+try:
+    from ggame.pyinput import *
+    didLoadPyinput = True
+except:
+    didLoadPyinput = False
+
 class Frame(object):
     """
     Frame is a utility class for expressing the idea of a rectangular region.
@@ -925,6 +931,396 @@ class Sprite(object):
         App._remove(self)
         self.GFX.destroy()
 
+class SolidSprite(object):
+    """
+    The `ggame.Sprite` class combines the idea of a visual/graphical asset, a
+    position on the screen, and *behavior*. Although the `ggame.Sprite` can be
+    used as-is, it is generally subclassed to give it the desired behavior.
+
+    When subclassing the `ggame.Sprite` class, you may customize the initialization
+    code to use a specific asset. A 'step' or 'poll' method may be added
+    for handling per-frame actions (e.g. checking for collisions). Step or poll
+    functions are not automatically called by the `ggame.App` class, but you
+    may subclass the `ggame.App` class in order to do this.
+
+    Furthermore, you may wish to define event callback methods in your customized
+    sprite class. With customized creation, event handling, and periodic processing
+    you can achieve fully autonomous behavior for your class. 
+    """
+ 
+    _rectCollision = "rect"
+    _circCollision = "circ"
+    
+    def __init__(self, asset, pos=(0,0)):
+        """
+        The `ggame.Sprite` must be created with an existing graphical `asset`.
+        An optional `pos` or position may be provided, which specifies the 
+        starting (x,y) coordinates of the sprite on the screen. By default,
+        the position of a sprite defines the location of its upper-left hand
+        corner. This behavior can be modified by customizing the `center` of
+        the sprite.
+
+        Example: player = Sprite(ImageAsset("player.png", (100,100))
+        """
+        self._index = 0
+        if type(asset) == ImageAsset:
+            self.asset = asset
+            try:
+                #self.GFX = GFX_Sprite()
+                self.GFX = GFX_Sprite(asset.GFX) # GFX is PIXI Sprite
+            except:
+                self.GFX = None
+        elif type(asset) in [RectangleAsset, 
+            CircleAsset, 
+            EllipseAsset, 
+            PolygonAsset,
+            LineAsset,
+            ]:
+            self.asset = asset
+            self.GFX = asset.GFX.clone() # GFX is PIXI Graphics (from Sprite)
+            self.GFX.visible = True
+        elif type(asset) in [TextAsset]:
+            self.asset = asset._clone()
+            self.GFX = self.asset.GFX # GFX is PIXI Text (from Sprite)
+            self.GFX.visible = True
+        self.position = pos
+        """Tuple indicates the position of the sprite on the screen."""
+        self._setExtents()
+        self.rectangularCollisionModel()
+        App._add(self)
+        
+    def _setExtents(self):
+        """
+        update min/max x and y based on position, center, width, height
+        """
+        self.xmin = int(self.x - self.fxcenter * self.width)
+        self.xmax = int(self.x + (1 - self.fxcenter) * self.width)
+        self.ymin = int(self.y - self.fycenter * self.height)
+        self.ymax = int(self.y + (1 - self.fycenter) * self.height)
+        self.radius = int((self.width + self.height)/4)
+        #self.xcenter = int(self.x + (1 - self.fxcenter) * self.width / 2)
+        #self.ycenter = int(self.y + (1 - self.fycenter) * self.height / 2)
+
+    def firstImage(self):
+        """
+        Select and display the *first* image used by this sprite.
+        """
+        self.GFX.texture = self.asset[0]
+    
+    def lastImage(self):
+        """
+        Select and display the *last* image used by this sprite.
+        """
+        self.GFX.texture = self.asset[-1]
+    
+    def nextImage(self, wrap = False):
+        """
+        Select and display the *next* image used by this sprite.
+        If the current image is already the *last* image, then
+        the image is not advanced.
+
+        If the optional `wrap` parameter is set to `True`, then calling
+        `ggame.Sprite.nextImage` on the last image will cause the *first*
+        image to be loaded.
+        """
+        self._index += 1
+        if self._index >= len(self.asset):
+            if wrap:
+                self._index = 0
+            else:
+                self._index = len(self.asset)-1
+        self.GFX.texture = self.asset[self._index]
+    
+    def prevImage(self, wrap = False):
+        """
+        Select and display the *previous* image used by this sprite.
+        If the current image is already the *first* image, then
+        the image is not changed.
+
+        If the optional `wrap` parameter is set to `True`, then calling
+        `ggame.Sprite.prevImage` on the first image will cause the *last*
+        image to be loaded.
+        """
+        self._index -= 1
+        if self._index < 0:
+            if wrap:
+                self._index = len(self.asset)-1
+            else:
+                self._index = 0
+        self.GFX.texture = self.asset[self._index]
+    
+    def setImage(self, index=0):
+        """
+        Select the image to display by giving its `index`, where an index
+        of zero represents the *first* image in the asset.
+
+        This is equivalent to setting the `ggame.Sprite.index` property
+        directly.
+        """
+        self.index = index
+
+    def rectangularCollisionModel(self):
+        """
+        Calling this method will configure the sprite to use a simple 
+        rectangular collision model when checking for overlap with 
+        other sprites. In this model, the "collideable" area of the sprite
+        is equal to the rectangle of the asset image. If the sprite asset
+        image includes a large transparent margin, this may cause the 
+        collision box to be larger than desired.
+        """
+        self._collisionStyle = type(self)._rectCollision
+
+    def circularCollisionModel(self):
+        """
+        Calling the sprite's `ggame.Sprite.circularCollisionModel` method 
+        will configure the sprite to use a simple circular collision model 
+        when checking for overlap with other sprites. In this model, the
+        "collideable" area of the sprite is regarded as a circle whose
+        diameter is equal to the mean of the width and height of the 
+        asset image.
+        """
+        self._collisionStyle = type(self)._circCollision
+
+    @property
+    def index(self):
+        """This is an integer index in to the list of images available for this sprite."""
+        return self._index
+        
+    @index.setter
+    def index(self, value):
+        self._index = value
+        try:
+            self.GFX.texture = self.asset[self._index]
+        except:
+            self._index = 0
+            self.GFX.texture = self.asset[self._index]
+
+    @property
+    def width(self):
+        """
+        This is an integer representing the display width of the sprite.
+        Assigning a value to the width will scale the image horizontally.
+        """
+        return self.GFX.width
+        
+    @width.setter
+    def width(self, value):
+        self.GFX.width = value
+        self._setExtents()
+    
+    @property
+    def height(self):
+        """
+        This is an integer representing the display height of the sprite.
+        Assigning a value to the height will scale the image vertically.
+        """
+        return self.GFX.height
+    
+    @height.setter
+    def height(self, value):
+        self.GFX.height = value
+        self._setExtents()
+        
+    @property
+    def x(self):
+        """
+        This represents the x-coordinate of the sprite on the screen. Assigning
+        a value to this attribute will move the sprite horizontally.
+        """
+        return self.GFX.position.x
+        
+    @x.setter
+    def x(self, value):
+        self.GFX.position.x = value
+        self._setExtents()
+        
+    @property
+    def y(self):
+        """
+        This represents the y-coordinate of the sprite on the screen. Assigning
+        a value to this attribute will move the sprite vertically.
+        """
+        return self.GFX.position.y
+        
+    @y.setter
+    def y(self, value):
+        self.GFX.position.y = value
+        self._setExtents()
+    
+    @property
+    def position(self):
+        """
+        This represents the (x,y) coordinates of the sprite on the screen. Assigning
+        a value to this attribute will move the sprite to the new coordinates.
+        """
+        return (self.GFX.position.x, self.GFX.position.y)
+        
+    @position.setter
+    def position(self, value):
+        self.GFX.position.x = value[0]
+        self.GFX.position.y = value[1]
+        self._setExtents()
+        
+    @property
+    def fxcenter(self):
+        """
+        This represents the horizontal position of the sprite "center", as a floating
+        point number between 0.0 and 1.0. A value of 0.0 means that the x-coordinate
+        of the sprite refers to its left hand edge. A value of 1.0 refers to its 
+        right hand edge. Any value in between may be specified. Values may be assigned
+        to this attribute. 
+        """
+        try:
+            return self.GFX.anchor.x
+            self._setExtents()
+        except:
+            return 0.0
+        
+    @fxcenter.setter
+    def fxcenter(self, value):
+        """
+        Float: 0-1
+        """
+        try:
+            self.GFX.anchor.x = value
+            self._setExtents()
+        except:
+            pass
+        
+    @property
+    def fycenter(self):
+        """
+        This represents the vertical position of the sprite "center", as a floating
+        point number between 0.0 and 1.0. A value of 0.0 means that the x-coordinate
+        of the sprite refers to its top edge. A value of 1.0 refers to its 
+        bottom edge. Any value in between may be specified. Values may be assigned
+        to this attribute. 
+        """
+        try:
+            return self.GFX.anchor.y
+        except:
+            return 0.0
+        
+    @fycenter.setter
+    def fycenter(self, value):
+        """
+        Float: 0-1
+        """
+        try:
+            self.GFX.anchor.y = value
+            self._setExtents()
+        except:
+            pass
+    
+    @property
+    def center(self):
+        """
+        This attribute represents the horizontal and vertical position of the 
+        sprite "center" as a tuple of floating point numbers. See the 
+        descriptions for `ggame.Sprite.fxcenter` and `ggame.Sprite.fycenter` for 
+        more details.
+        """
+        try:
+            return (self.GFX.anchor.x, self.GFX.anchor.y)
+        except:
+            return (0.0, 0.0)
+        
+    @center.setter
+    def center(self, value):
+        try:
+            self.GFX.anchor.x = value[0]
+            self.GFX.anchor.y = value[1]
+            self._setExtents()
+        except:
+            pass
+    
+    @property
+    def visible(self):
+        """
+        This boolean attribute may be used to change the visibility of the sprite. Setting
+        `ggame.Sprite.visible` to `False` will prevent the sprite from rendering on the 
+        screen.
+        """
+        return self.GFX.visible
+    
+    @visible.setter
+    def visible(self, value):
+        self.GFX.visible = value
+
+    @property
+    def scale(self):
+        """
+        This attribute may be used to change the size of the sprite ('scale' it) on the 
+        screen. Value may be a floating point number. A value of 1.0 means that the sprite
+        image will keep its original size. A value of 2.0 would double it, etc.
+        """
+        return self.GFX.scale.x
+        
+    @scale.setter
+    def scale(self, value):
+        self.GFX.scale.x = value
+        self.GFX.scale.y = value
+        self._setExtents()
+
+    @property
+    def rotation(self):
+        """
+        This attribute may be used to change the rotation of the sprite on the screen.
+        Value may be a floating point number. A value of 0.0 means no rotation. A value 
+        of 1.0 means  a rotation of 1 radian in a counter-clockwise direction. One radian
+        is 180/pi or approximately 57.3 degrees.
+        """
+        return -self.GFX.rotation
+        
+    @rotation.setter
+    def rotation(self, value):
+        self.GFX.rotation = -value
+
+    def collidingWith(self, obj):
+        """
+        Return a boolean True if this sprite is currently overlapping the sprite 
+        referenced by `obj`. Uses the collision model specified (rectangular, by 
+        default). Collision/overlap decision is based purely on the overall, gross
+        dimensions of the image rectangle. There is no attempt to verify that 
+        non-transparent pixels in one sprite are actually overlapping visible
+        pixels in another.
+        """
+        if self is obj:
+            return False
+        elif self._collisionStyle == obj._collisionStyle == type(self)._circCollision:
+            dist2 = (self.x - obj.x)**2 + (self.y - obj.y)**2
+            return dist2 < (self.radius + obj.radius)**2
+        else:
+            return (not (self.xmin > obj.xmax
+                or self.xmax < obj.xmin
+                or self.ymin > obj.ymax
+                or self.ymax < obj.ymin))
+
+    def collidingWithSprites(self, sclass = None):
+        """
+        Return a list of sprite objects identified by the `sclass` parameter
+        that are currently colliding with (that is, with which the `ggame.Sprite.collidingWith`
+        method returns True) this sprite. If `sclass` is set to `None` (default), then
+        all other sprites are checked for collision, otherwise, only sprites whose
+        class matches `sclass` are checked.
+        """
+        if sclass is None:
+            slist = App.spritelist
+        else:
+            slist = App.getSpritesbyClass(sclass)
+        return list(filter(self.collidingWith, slist))
+        
+    def colliding(self, sprites):
+        self.colliding = sprites
+
+    def destroy(self):
+        """
+        Call the `ggame.Sprite.destroy` method to prevent the sprite from being displayed,
+        or checked in collision detection. If you only want to prevent a sprite from being
+        displayed, set the `ggame.Sprite.visible` attribute to `False`.
+        """
+        App._remove(self)
+        self.GFX.destroy()
 
 class SoundAsset(object):
     """
@@ -1201,6 +1597,7 @@ class App(object):
     _spritesdict = {}
     _spritesadded = False
     _win = None
+    winput_ready = False
 
     def __init__(self, *args):
         """
@@ -1274,6 +1671,27 @@ class App(object):
         else:
             self.step()
         App._win.animate(self._animate)
+        App.solidCollisionDetection()
+
+    def solidCollisionDetection():
+        collisions = []
+        coll_dict = {}
+        solid_sprites = App.getSpritesbyClass(solidSprite)
+        for sprite in solid_sprites:
+            for sprite2 in solid_sprites:
+                stop = False
+                for coll in collisions:
+                    if sprite in coll and sprite2 in coll:
+                        stop = True
+                if not stop and id(sprite) != id(sprite2):
+                    if (not (sprite.xmin > sprite2.xmax or sprite.xmax < sprite2.xmin or sprite.ymin > sprite2.ymax or sprite.ymax < sprite2.ymin)):
+                        collisions.append([sprite, sprite2])
+                        coll_dict[id(sprite)].append(sprite2)
+                        coll_dict[id(sprite2)].append(sprite)
+        for collid in coll_dict:
+            for spri in solid_sprites:
+                if id(spri) == collid[0]:
+                    spri.colliding(collid[1])
 
     @classmethod
     def _destroy(cls, *args):
@@ -1366,4 +1784,6 @@ class App(object):
         """
         self.userfunc = userfunc
         App._win.animate(self._animate)
+        if didLoadPyinput:
+            winput_init()
 
