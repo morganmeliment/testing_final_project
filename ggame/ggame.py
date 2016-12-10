@@ -1334,6 +1334,9 @@ class SolidSprite(object):
         """
         App._remove(self)
         self.GFX.destroy()
+        
+    def mirrorType():
+        print("SolidSprite")
 
 class SoundAsset(object):
     """
@@ -1610,6 +1613,7 @@ class App(object):
     _spritesdict = {}
     _spritesadded = False
     _win = None
+    _solidSprites = []
     winput_ready = False
 
     def __init__(self, *args):
@@ -1669,6 +1673,11 @@ class App(object):
         App.spritelist.append(obj)
         if type(obj) not in App._spritesdict:
             App._spritesdict[type(obj)] = []
+        try:
+            if obj.mirrorType() == "SolidSprite":
+                App._solidSprites.append(obj)
+        except:
+            pass
         App._spritesdict[type(obj)].append(obj)
 
     @classmethod
@@ -1676,6 +1685,10 @@ class App(object):
         if App._win != None:
             App._win.remove(obj.GFX)
         App.spritelist.remove(obj)
+        try:
+            App._solidSprites.remove(obj)
+        except:
+            pass
         App._spritesdict[type(obj)].remove(obj)
         
     def _animate(self, dummy):
@@ -1690,7 +1703,7 @@ class App(object):
     def solidCollisionDetection():
         collisions = []
         coll_dict = {}
-        solid_sprites = App.getSpritesbyClass(solidSprite)
+        solid_sprites = App._solidSprites
         for sprite in solid_sprites:
             for sprite2 in solid_sprites:
                 stop = False
