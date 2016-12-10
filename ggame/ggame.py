@@ -1729,6 +1729,7 @@ class App(object):
             #print("HEllo2")
         except:
             #print("HEllo")
+            pass
 
     @classmethod
     def _destroy(cls, *args):
