@@ -1698,6 +1698,7 @@ class App(object):
             self.step()
         App._win.animate(self._animate)
         App.solidCollisionDetection()
+        print("HEllo6")
 
     @classmethod
     def solidCollisionDetection(cls):
