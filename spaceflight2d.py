@@ -19,7 +19,7 @@ R = relode
 P = panic stop button
 points only count when you're moving
 """
-from ggame import App, RectangleAsset, ImageAsset, Sprite, LineStyle, Color, Frame, TextAsset, SoundAsset, Sound
+from ggame import App, RectangleAsset, ImageAsset, Sprite, LineStyle, Color, Frame, TextAsset, SoundAsset, Sound, SolidSprite
 import math
 from time import time
 import random
@@ -40,7 +40,7 @@ class Stars(Sprite):
         super().__init__(Stars.asset, position)
         self.scale = 0.23
          
-class astroid(Sprite):
+class astroid(SolidSprite):
     asset = ImageAsset("images/asteroid1.png", 
     Frame(5,5,62,62), 4, 'vertical')
     
