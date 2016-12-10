@@ -114,7 +114,7 @@ class astroid(SolidSprite):
             self.avy = 0
             self.avx = 0
 
-class SpaceShip(SolidSprite):
+class SpaceShip(Sprite):
     """
     Animated space ship
     """
