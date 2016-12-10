@@ -1700,7 +1700,7 @@ class App(object):
         App.solidCollisionDetection()
 
     @classmethod
-    def solidCollisionDetection():
+    def solidCollisionDetection(cls):
         collisions = []
         coll_dict = {}
         solid_sprites = App._solidSprites
