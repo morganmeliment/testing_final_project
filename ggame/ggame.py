@@ -1339,7 +1339,7 @@ class SolidSprite(object):
         App._remove(self)
         self.GFX.destroy()
         
-    def mirrorType():
+    def mirrorType(self):
         return "SolidSprite"
 
 class SoundAsset(object):
