@@ -1717,7 +1717,7 @@ class App(object):
                 if sprite2 not in coll_dict:
                     coll_dict[sprite2] = []
                 if not (sprite2 in coll_dict[sprite]) and sprite != sprite2:
-                    if not sprite.xmin > sprite2.xmax or not sprite.xmax < sprite2.xmin or not sprite.ymin > sprite2.ymax or not sprite.ymax < sprite2.ymin:
+                    if not (sprite.xmin > sprite2.xmax or sprite.xmax < sprite2.xmin or sprite.ymin > sprite2.ymax or sprite.ymax < sprite2.ymin):
                         coll_dict[sprite].append(sprite2)
                         coll_dict[sprite2].append(sprite)
                         #sprite.colliding(collidval)
