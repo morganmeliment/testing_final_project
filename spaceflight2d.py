@@ -22,7 +22,7 @@ points only count when you're moving
 from ggame import App, RectangleAsset, ImageAsset, Sprite, LineStyle, Color, Frame, TextAsset, SoundAsset, Sound
 import math
 from time import time
-from random import *
+import random
 
 # zufallszahl
 def zufaellig(stellen, komma):
