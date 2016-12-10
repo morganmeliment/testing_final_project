@@ -964,6 +964,8 @@ class SolidSprite(object):
         """
         self.spriteCollisions = []
         self.classCollisions = {}
+        App._solidSprites.append(self)
+        
         for y in App._spritesdict:
             self.classCollisions[type(y)] = []
         
