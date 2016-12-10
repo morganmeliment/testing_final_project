@@ -964,6 +964,8 @@ class SolidSprite(object):
         """
         self.spriteCollisions = []
         self.classCollisions = {}
+        for y in App._spritesdict:
+            self.classCollisions[type(y)] = []
         
         self._index = 0
         if type(asset) == ImageAsset:
