@@ -93,8 +93,8 @@ class astroid(SolidSprite):
         self.rotation += self.avr
         self.x += self.avx
         self.y += self.avy
-        """
         clw = self.collidingWithSprites(astroid)
+        """
         if len(clw) > 0:
             #print("da")
             ospr = clw[0]
