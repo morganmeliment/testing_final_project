@@ -1311,13 +1311,16 @@ class SolidSprite(object):
         """
         if sclass is None:
             return self.spriteCollisions
+            print(self.spriteCollisions)
         else:
             #return self.classCollisions[sclass]
             return self.spriteCollisions
+            print(self.spriteCollisions)
         #return list(filter(self.collidingWith, slist))
         
     def colliding(self, sprites):
         self.spriteCollisions = sprites
+        """
         self.classCollisions = {}
         for y in App._spritesdict:
             self.classCollisions[type(y)] = []
@@ -1325,7 +1328,7 @@ class SolidSprite(object):
             #if not self.classCollisions[type(x)]:
             #    self.classCollisions[type(x)] = [x]
             #else:
-            self.classCollisions[type(x)].append(x)
+            self.classCollisions[type(x)].append(x)"""
 
     def destroy(self):
         """
