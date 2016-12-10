@@ -1678,8 +1678,8 @@ class App(object):
         if type(obj) not in App._spritesdict:
             App._spritesdict[type(obj)] = []
         try:
-            if obj.mirrorType() == "SolidSprite":
-                App._solidSprites.append(obj)
+            obj.mirrorType()
+            App._solidSprites.append(obj)
         except:
             pass
         App._spritesdict[type(obj)].append(obj)
