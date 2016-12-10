@@ -1702,7 +1702,7 @@ class App(object):
             self.step()
         App._win.animate(self._animate)
         App.solidCollisionDetection()
-        print(App.solidSprites)
+        print(App._solidSprites)
 
     @classmethod
     def solidCollisionDetection(cls):
