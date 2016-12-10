@@ -20,7 +20,7 @@ P = panic stop button
 points only count when you're moving
 """
 from ggame import App, RectangleAsset, ImageAsset, Sprite, LineStyle, Color, Frame
-from ggame import App, Sprite, ImageAsset, Frame
+from ggame import App, Sprite, ImageAsset, Frame, SolidSprite
 from ggame import SoundAsset, Sound, TextAsset, Color
 import math
 from time import time
@@ -42,7 +42,7 @@ class Stars(Sprite):
         super().__init__(Stars.asset, position)
         self.scale = 0.23
          
-class astroid(Sprite):
+class astroid(SolidSprite):
     asset = ImageAsset("images/asteroid1.png", 
     Frame(5,5,62,62), 4, 'vertical')
     
@@ -112,7 +112,7 @@ class astroid(Sprite):
             self.avy = 0
             self.avx = 0
 
-class SpaceShip(Sprite):
+class SpaceShip(SolidSprite):
     """
     Animated space ship
     """
