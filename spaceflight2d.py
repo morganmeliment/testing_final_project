@@ -19,12 +19,10 @@ R = relode
 P = panic stop button
 points only count when you're moving
 """
-from ggame import App, RectangleAsset, ImageAsset, Sprite, LineStyle, Color, Frame
-from ggame import App, Sprite, ImageAsset, Frame
-from ggame import SoundAsset, Sound, TextAsset, Color
+from ggame import App, RectangleAsset, ImageAsset, Sprite, LineStyle, Color, Frame, TextAsset, SoundAsset, Sound
 import math
 from time import time
-import random
+from random import *
 
 # zufallszahl
 def zufaellig(stellen, komma):
