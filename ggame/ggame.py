@@ -1704,7 +1704,7 @@ class App(object):
             self.step()
         App._win.animate(self._animate)
         App.solidCollisionDetection()
-        print(App._solidSprites)
+        #print(App._solidSprites)
 
     @classmethod
     def solidCollisionDetection(cls):
@@ -1728,7 +1728,7 @@ class App(object):
                 for spri in solid_sprites:
                     if id(spri) == collid:
                         spri.colliding(collidval)
-            #print("HEllo2")
+                        print("collisiondetected")
         except:
             #print("HEllo")
             pass
