@@ -1719,6 +1719,8 @@ class App(object):
                         coll_dict[sprite2].append(sprite)
                         #sprite.colliding(collidval)
                         print("collisiondetected")
+                    else:
+                        print("nocollision")
 
     @classmethod
     def _destroy(cls, *args):
