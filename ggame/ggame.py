@@ -1711,12 +1711,15 @@ class App(object):
         coll_dict = {}
         App._solidSprites
         for sprite in App._solidSprites:
-            coll_dict[sprite] = []
+            if sprite not in coll_dict:
+                coll_dict[sprite] = []
             for sprite2 in App._solidSprites:
+                if sprite2 not in coll_dict:
+                    coll_dict[sprite2] = []
                 if not (sprite2 in coll_dict[sprite]) and sprite != sprite2:
                     if sprite.xmin > sprite2.xmax or sprite.xmax < sprite2.xmin or sprite.ymin > sprite2.ymax or sprite.ymax < sprite2.ymin:
-                        #coll_dict[sprite].append(sprite2)
-                        #coll_dict[sprite2].append(sprite)
+                        coll_dict[sprite].append(sprite2)
+                        coll_dict[sprite2].append(sprite)
                         #sprite.colliding(collidval)
                         print("collisiondetected")
                     else:
