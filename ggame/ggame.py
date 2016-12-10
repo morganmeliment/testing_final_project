@@ -1703,6 +1703,7 @@ class App(object):
     def solidCollisionDetection(cls):
         collisions = []
         coll_dict = {}
+        print("HEllo3")
         try:
             solid_sprites = App._solidSprites
             for sprite in solid_sprites:
@@ -1720,9 +1721,9 @@ class App(object):
                 for spri in solid_sprites:
                     if id(spri) == collid:
                         spri.colliding(collidval)
-            print(coll_dict)
+            print("HEllo2")
         except:
-            print(len(coll_dict))
+            print("HEllo")
 
     @classmethod
     def _destroy(cls, *args):
