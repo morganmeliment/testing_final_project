@@ -1684,6 +1684,7 @@ class App(object):
         App._win.animate(self._animate)
         App.solidCollisionDetection()
 
+    @classmethod
     def solidCollisionDetection():
         collisions = []
         coll_dict = {}
