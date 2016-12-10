@@ -1703,6 +1703,7 @@ class App(object):
             for spri in solid_sprites:
                 if id(spri) == collid:
                     spri.colliding(collidval)
+        print(coll_dict)
 
     @classmethod
     def _destroy(cls, *args):
