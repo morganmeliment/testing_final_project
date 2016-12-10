@@ -1719,9 +1719,6 @@ class App(object):
                         coll_dict[sprite2].append(sprite)
                         #sprite.colliding(collidval)
                         print("collisiondetected")
-        except:
-            #print("HEllo")
-            pass
 
     @classmethod
     def _destroy(cls, *args):
