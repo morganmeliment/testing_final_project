@@ -1340,7 +1340,7 @@ class SolidSprite(object):
         self.GFX.destroy()
         
     def mirrorType():
-        print("SolidSprite")
+        return "SolidSprite"
 
 class SoundAsset(object):
     """
