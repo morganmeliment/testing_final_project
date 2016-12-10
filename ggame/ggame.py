@@ -1310,8 +1310,8 @@ class SolidSprite(object):
         if sclass is None:
             return self.spriteCollisions
         else:
-            return [y for y in self.class]
-        return list(filter(self.collidingWith, slist))
+            return self.classCollisions[sclass]
+        #return list(filter(self.collidingWith, slist))
         
     def colliding(self, sprites):
         self.spriteCollisions = sprites
