@@ -1722,7 +1722,7 @@ class App(object):
                         spri.colliding(collidval)
             print(coll_dict)
         except:
-            print(coll_dict)
+            print(len(coll_dict))
 
     @classmethod
     def _destroy(cls, *args):
