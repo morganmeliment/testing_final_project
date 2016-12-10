@@ -93,8 +93,8 @@ class astroid(SolidSprite):
         self.rotation += self.avr
         self.x += self.avx
         self.y += self.avy
-        """
-        clw = self.collidingWithSprites(astroid)
+       
+        clw = self.collidingWithSprites()
         
         if len(clw) > 0:
             #print("da")
@@ -113,7 +113,6 @@ class astroid(SolidSprite):
             print(self.angle2)
             self.avy = 0
             self.avx = 0
-        """
 
 class SpaceShip(SolidSprite):
     """
@@ -265,11 +264,11 @@ class SpaceGame(App):
         Stars((0,0))
         #SpaceShip((700,500), self.width, self.height)
         astroid((234,423), self.width, self.height)
-        #astroid((572,245), self.width, self.height)
-        #astroid((424,523), self.width, self.height)
-        #astroid((234,240), self.width, self.height)
-        #astroid((234,423), self.width, self.height)
-        #astroid((572,245), self.width, self.height)
+        astroid((572,245), self.width, self.height)
+        astroid((424,523), self.width, self.height)
+        astroid((234,240), self.width, self.height)
+        astroid((234,423), self.width, self.height)
+        astroid((572,245), self.width, self.height)
 
   
     def step(self):
