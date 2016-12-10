@@ -1720,10 +1720,7 @@ class App(object):
                     if not (sprite.xmin > sprite2.xmax or sprite.xmax < sprite2.xmin or sprite.ymin > sprite2.ymax or sprite.ymax < sprite2.ymin):
                         coll_dict[sprite].append(sprite2)
                         coll_dict[sprite2].append(sprite)
-                        #sprite.colliding(collidval)
                         print("collisiondetected")
-                    else:
-                        print("nocollision")
 
     @classmethod
     def _destroy(cls, *args):
