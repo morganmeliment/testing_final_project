@@ -1316,7 +1316,7 @@ class SolidSprite(object):
     def colliding(self, sprites):
         self.spriteCollisions = sprites
         self.classCollisions = {}
-        for y in App.spritesdict:
+        for y in App._spritesdict:
             self.classCollisions[type(y)] = []
         for x in sprites:
             #if not self.classCollisions[type(x)]:
