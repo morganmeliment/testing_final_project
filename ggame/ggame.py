@@ -963,7 +963,8 @@ class SolidSprite(object):
         Example: player = Sprite(ImageAsset("player.png", (100,100))
         """
         self.spriteCollisions = []
-        self.classCollisions = []
+        self.classCollisions = {}
+        
         self._index = 0
         if type(asset) == ImageAsset:
             self.asset = asset
@@ -1307,14 +1308,19 @@ class SolidSprite(object):
         class matches `sclass` are checked.
         """
         if sclass is None:
-            slist = App.spritelist
+            return self.spriteCollisions
         else:
-            slist = App.getSpritesbyClass(sclass)
+            return [y for y in self.class]
         return list(filter(self.collidingWith, slist))
         
     def colliding(self, sprites):
         self.spriteCollisions = sprites
-        self.classCollisions = [type(x) for x in sprites if type(x) not in self.classCollisions]
+        self.classCollisions = {}
+        for x in sprites:
+            if not self.classCollisions[type(x)]:
+                self.classCollisions[type(x)] = [x]
+            else:
+                self.classCollisions[type(x)].append(x)
 
     def destroy(self):
         """
@@ -1691,10 +1697,10 @@ class App(object):
                         collisions.append([sprite, sprite2])
                         coll_dict[id(sprite)].append(sprite2)
                         coll_dict[id(sprite2)].append(sprite)
-        for collid in coll_dict:
+        for collid, collidval in coll_dict:
             for spri in solid_sprites:
-                if id(spri) == collid[0]:
-                    spri.colliding(collid[1])
+                if id(spri) == collid:
+                    spri.colliding(collidval)
 
     @classmethod
     def _destroy(cls, *args):
