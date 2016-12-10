@@ -1708,26 +1708,16 @@ class App(object):
 
     @classmethod
     def solidCollisionDetection(cls):
-        collisions = []
         coll_dict = {}
-        #print("HEllo3")
-        try:
-            solid_sprites = App._solidSprites
-            for sprite in solid_sprites:
-                for sprite2 in solid_sprites:
-                    stop = False
-                    for coll in collisions:
-                        if sprite in coll and sprite2 in coll:
-                            stop = True
-                    if not stop and sprite != sprite2:
-                        if (not (sprite.xmin > sprite2.xmax or sprite.xmax < sprite2.xmin or sprite.ymin > sprite2.ymax or sprite.ymax < sprite2.ymin)):
-                            collisions.append([sprite, sprite2])
-                            coll_dict[id(sprite)].append(sprite2)
-                            coll_dict[id(sprite2)].append(sprite)
-            for collid, collidval in coll_dict:
-                for spri in solid_sprites:
-                    if id(spri) == collid:
-                        spri.colliding(collidval)
+        App._solidSprites
+        for sprite in App._solidSprites:
+            coll_dict[sprite] = []
+            for sprite2 in App._solidSprites:
+                if not (sprite2 in coll_dict[sprite]) and sprite != sprite2:
+                    if (not (sprite.xmin > sprite2.xmax or sprite.xmax < sprite2.xmin or sprite.ymin > sprite2.ymax or sprite.ymax < sprite2.ymin)):
+                        coll_dict[sprite].append(sprite2)
+                        coll_dict[sprite2].append(sprite)
+                        #sprite.colliding(collidval)
                         print("collisiondetected")
         except:
             #print("HEllo")
