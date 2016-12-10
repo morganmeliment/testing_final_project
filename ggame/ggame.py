@@ -962,6 +962,8 @@ class SolidSprite(object):
 
         Example: player = Sprite(ImageAsset("player.png", (100,100))
         """
+        self.spriteCollisions = []
+        self.classCollisions = []
         self._index = 0
         if type(asset) == ImageAsset:
             self.asset = asset
@@ -1311,7 +1313,8 @@ class SolidSprite(object):
         return list(filter(self.collidingWith, slist))
         
     def colliding(self, sprites):
-        self.colliding = sprites
+        self.spriteCollisions = sprites
+        self.classCollisions = [type(x) for x in sprites if type(x) not in self.classCollisions]
 
     def destroy(self):
         """
