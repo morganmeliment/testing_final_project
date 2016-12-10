@@ -261,7 +261,7 @@ class SpaceGame(App):
     """
     def __init__(self, width, height):
         super().__init__(width, height)
-        Stars((0,0))
+        #Stars((0,0))
         #SpaceShip((700,500), self.width, self.height)
         astroid((234,423), self.width, self.height)
         astroid((572,245), self.width, self.height)
@@ -276,7 +276,6 @@ class SpaceGame(App):
             ship.step()
         for Bstroid in self.getSpritesbyClass(astroid):
             Bstroid.step()
-        
         #punktestand
 
  
