@@ -272,7 +272,7 @@ class SpaceGame(App):
         #astroid((572,245), self.width, self.height)
         self.listenKeyEvent("keydown", "space", self.toggle)
         
-    def toggle(self):
+    def toggle(self, event):
         if App.stopped:
             App.stopped = False
         else:
