@@ -1721,6 +1721,7 @@ class App(object):
                         coll_dict[sprite].append(sprite2)
                         coll_dict[sprite2].append(sprite)
                         print("collisiondetected: " + str(id(sprite)) + " " + str(id(sprite2)))
+        print("frameover")
 
     @classmethod
     def _destroy(cls, *args):
