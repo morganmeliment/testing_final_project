@@ -268,8 +268,8 @@ class SpaceGame(App):
         astroid((572,245), self.width, self.height)
         astroid((424,523), self.width, self.height)
         astroid((234,240), self.width, self.height)
-        #astroid((234,423), self.width, self.height)
-        #astroid((572,245), self.width, self.height)
+        astroid((234,423), self.width, self.height)
+        astroid((600,355), self.width, self.height)
         self.listenKeyEvent("keydown", "space", self.toggle)
         
     def toggle(self, event):
