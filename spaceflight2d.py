@@ -279,7 +279,7 @@ class SpaceGame(App):
             self.stopped = True
   
     def step(self):
-        if not step.stopped:
+        if not self.stopped:
             for ship in self.getSpritesbyClass(SpaceShip):
                 ship.step()
             for Bstroid in self.getSpritesbyClass(astroid):
