@@ -280,11 +280,12 @@ class SpaceGame(App):
 
   
     def step(self):
-        for ship in self.getSpritesbyClass(SpaceShip):
-            ship.step()
-        for Bstroid in self.getSpritesbyClass(astroid):
-            Bstroid.step()
-        #punktestand
+        if not App.stopped:
+            for ship in self.getSpritesbyClass(SpaceShip):
+                ship.step()
+            for Bstroid in self.getSpritesbyClass(astroid):
+                Bstroid.step()
+            #punktestand
 
  
              
