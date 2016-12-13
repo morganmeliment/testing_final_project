@@ -1709,7 +1709,6 @@ class App(object):
     @classmethod
     def solidCollisionDetection(cls):
         coll_dict = {}
-        App._solidSprites
         for sprite in App._solidSprites:
             if sprite not in coll_dict:
                 coll_dict[sprite] = []
@@ -1720,8 +1719,8 @@ class App(object):
                     if not (sprite.xmin > sprite2.xmax or sprite.xmax < sprite2.xmin or sprite.ymin > sprite2.ymax or sprite.ymax < sprite2.ymin):
                         coll_dict[sprite].append(sprite2)
                         coll_dict[sprite2].append(sprite)
-                        print("collisiondetected: " + str(id(sprite)) + " " + str(id(sprite2)))
-        print("frameover")
+                        #print("collisiondetected: " + str(id(sprite)) + " " + str(id(sprite2)))
+        #print("frameover")
 
     @classmethod
     def _destroy(cls, *args):
