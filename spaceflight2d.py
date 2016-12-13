@@ -268,7 +268,7 @@ class SpaceGame(App):
         astroid((424,523), self.width, self.height)
         astroid((234,240), self.width, self.height)
         #astroid((234,423), self.width, self.height)
-        astroid((572,245), self.width, self.height)
+        #astroid((572,245), self.width, self.height)
 
   
     def step(self):
