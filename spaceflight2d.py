@@ -259,9 +259,9 @@ class SpaceGame(App):
     """
     Tutorial4 space game example.
     """
-    stopped = False
     def __init__(self, width, height):
         super().__init__(width, height)
+        self.stopped = False
         #Stars((0,0))
         #SpaceShip((700,500), self.width, self.height)
         astroid((234,423), self.width, self.height)
@@ -273,14 +273,13 @@ class SpaceGame(App):
         self.listenKeyEvent("keydown", "space", self.toggle)
         
     def toggle(self, event):
-        if App.stopped:
-            App.stopped = False
+        if self.stopped:
+            self.stopped = False
         else:
-            App.stopped = True
-
+            self.stopped = True
   
     def step(self):
-        if not App.stopped:
+        if not step.stopped:
             for ship in self.getSpritesbyClass(SpaceShip):
                 ship.step()
             for Bstroid in self.getSpritesbyClass(astroid):
