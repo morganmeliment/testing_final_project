@@ -1704,7 +1704,7 @@ class App(object):
             self.step()
         App._win.animate(self._animate)
         App.solidCollisionDetection()
-        #print(App._solidSprites)
+        print("Amount of Sprites: " + str(len(App._solidSprites)))
 
     @classmethod
     def solidCollisionDetection(cls):
