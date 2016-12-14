@@ -1703,16 +1703,16 @@ class App(object):
         count=0
         coll_dict = {}
         for sprite in App._solidSprites:
-            if sprite not in coll_dict:
-                coll_dict[sprite] = []
+            if id(sprite) not in coll_dict:
+                coll_dict[id(sprite)] = []
             for sprite2 in App._solidSprites:
-                if sprite2 not in coll_dict:
-                    coll_dict[sprite2] = []
-                if (sprite2 not in coll_dict[sprite]) and (sprite is not sprite2):
+                if id(sprite2) not in coll_dict:
+                    coll_dict[id(sprite2)] = []
+                if (id(sprite2) not in coll_dict[id(sprite)]) and (sprite is not sprite2):
                     count = count + 1
                     if not (sprite.xmin > sprite2.xmax or sprite.xmax < sprite2.xmin or sprite.ymin > sprite2.ymax or sprite.ymax < sprite2.ymin):
-                        coll_dict[sprite].append(sprite2)
-                        coll_dict[sprite2].append(sprite)
+                        coll_dict[id(sprite)].append(id(sprite2))
+                        coll_dict[id(sprite2)].append(id(sprite))
                         #print("collisiondetected: " + str(id(sprite)) + " " + str(id(sprite2)))
         #print("frameover")
         print(count)
