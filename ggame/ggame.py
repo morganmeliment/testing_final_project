@@ -1708,7 +1708,7 @@ class App(object):
             for sprite2 in App._solidSprites:
                 if id(sprite2) not in coll_dict:
                     coll_dict[id(sprite2)] = []
-                if (id(sprite2) not in coll_dict[id(sprite)]) and (sprite is not sprite2):
+                if (id(sprite2) not in coll_dict[id(sprite)]) and id(sprite) != id(sprite2):
                     count = count + 1
                     if not (sprite.xmin > sprite2.xmax or sprite.xmax < sprite2.xmin or sprite.ymin > sprite2.ymax or sprite.ymax < sprite2.ymin):
                         coll_dict[id(sprite)].append(id(sprite2))
