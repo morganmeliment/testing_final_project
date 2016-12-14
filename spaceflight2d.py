@@ -53,7 +53,7 @@ class astroid(SolidSprite):
         self.heightscreen = height
         self.avy = 0
         self.avr = 0.05
-        self.circularCollisionModel()
+        #self.circularCollisionModel()
         
 
         self.randomx = 0
@@ -94,7 +94,7 @@ class astroid(SolidSprite):
         self.x += self.avx
         self.y += self.avy
        
-        clw = self.collidingWithSprites()
+        #clw = self.collidingWithSprites()
         
         if len(clw) > 0:
             #print("da")
