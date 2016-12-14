@@ -95,7 +95,7 @@ class astroid(SolidSprite):
         self.y += self.avy
        
         #clw = self.collidingWithSprites()
-        
+        clw = []
         if len(clw) > 0:
             #print("da")
             ospr = clw[0]
