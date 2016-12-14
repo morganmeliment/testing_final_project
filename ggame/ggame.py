@@ -1340,9 +1340,6 @@ class SolidSprite(object):
         """
         App._remove(self)
         self.GFX.destroy()
-        
-    def mirrorType(self):
-        return "SolidSprite"
 
 class SoundAsset(object):
     """
@@ -1679,11 +1676,6 @@ class App(object):
         App.spritelist.append(obj)
         if type(obj) not in App._spritesdict:
             App._spritesdict[type(obj)] = []
-        try:
-            obj.mirrorType()
-            App._solidSprites.append(obj)
-        except:
-            pass
         App._spritesdict[type(obj)].append(obj)
 
     @classmethod
