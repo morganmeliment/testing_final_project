@@ -94,25 +94,28 @@ class astroid(SolidSprite):
         self.x += self.avx
         self.y += self.avy
        
-        #clw = self.collidingWithSprites()
-        clw = []
+        clw = self.collidingWithSprites()
+        #clw = []
         if len(clw) > 0:
-            #print("da")
-            ospr = clw[0]
-            self.slope = (self.y-ospr.y)/(self.x-ospr.x)
-            self.bslope=(1/self.slope)*-1
-            print(self.bslope)
-            self.angle1 = math.atan((self.y-ospr.y)/(self.x-ospr.x))
-            print(self.angle1)
-            self.angle2 = math.atan((self.avy)/(self.avx))
+            self.collidewithastroid(clw[0])
+            clw[0].collidewithastroid(self)
             
-            if self.vy < 0:
-                if self.vx < 0:
-                    self.angle2 = self.angle2 +2*math.pi
-            
-            print(self.angle2)
-            self.avy = 0
-            self.avx = 0
+    def collidewithastroid(self, other):
+        #print("da")
+        ospr = other
+        slope = (self.y-ospr.y)/(self.x-ospr.x)
+        bslope = (1/slope)*-1
+        angle1 = math.atan(bslope)
+        angle2 = math.atan2((self.avy), (self.avx))
+        
+        avxa = (math.sqrt((self.avx**2)+(self.avy**2))*math.cos(angle2-angle1))
+        avya = (-1*math.sqrt((self.avx**2)+(self.avy**2))*math.sin(angle2-angle1))
+        avxax = avxa*math.cos(angle1)
+        avxay = avxa*math.sin(angle1)
+        avyax = avya*math.cos(angle1+math.pi/2)
+        avyay = avya*math.sin(angle1+math.pi/2)
+        self.avx = avxax + avyax
+        self.avy = avxay + avyay
 
 class SpaceShip(Sprite):
     """
