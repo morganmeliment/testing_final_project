@@ -1717,7 +1717,7 @@ class App(object):
                         count2 = count2 + 1
                         #print("collisiondetected: " + str(id(sprite)) + " " + str(id(sprite2)))
         for typein in coll_dict:
-            typein.collide(coll_dict[typein])
+            typein.colliding(coll_dict[typein])
         print(count, count2)
 
     @classmethod
