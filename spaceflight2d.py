@@ -42,7 +42,7 @@ class Stars(Sprite):
         super().__init__(Stars.asset, position)
         self.scale = 0.23
          
-class astroid(SolidSprite):
+class astroid(Sprite):
     asset = ImageAsset("images/asteroid1.png", 
     Frame(5,5,62,62), 4, 'vertical')
     
@@ -97,8 +97,11 @@ class astroid(SolidSprite):
         clw = self.collidingWithSprites()
         #clw = []
         if len(clw) > 0:
-            self.collidewithastroid(clw[0])
-            clw[0].collidewithastroid(self)
+            print(str(id(self)) + "    me")
+            for i in clw:
+                print(id(i))
+            #self.collidewithastroid(clw[0])
+            #clw[0].collidewithastroid(self)
             
     def collidewithastroid(self, other):
         #print("da")
@@ -292,4 +295,4 @@ class SpaceGame(App):
  
              
 myapp = SpaceGame(0, 0)
-myapp.run() 
+myapp.run()
