@@ -1292,16 +1292,8 @@ class SolidSprite(object):
         non-transparent pixels in one sprite are actually overlapping visible
         pixels in another.
         """
-        if self is obj:
-            return False
-        elif self._collisionStyle == obj._collisionStyle == type(self)._circCollision:
-            dist2 = (self.x - obj.x)**2 + (self.y - obj.y)**2
-            return dist2 < (self.radius + obj.radius)**2
-        else:
-            return (not (self.xmin > obj.xmax
-                or self.xmax < obj.xmin
-                or self.ymin > obj.ymax
-                or self.ymax < obj.ymin))
+        if obj in self.spriteCollisions:
+            return True
 
     def collidingWithSprites(self, sclass = None):
         """
@@ -1313,11 +1305,11 @@ class SolidSprite(object):
         """
         if sclass is None:
             return self.spriteCollisions
-            print(self.spriteCollisions)
+            #print(self.spriteCollisions)
         else:
             #return self.classCollisions[sclass]
             return self.spriteCollisions
-            print(self.spriteCollisions)
+            #print(self.spriteCollisions)
         #return list(filter(self.collidingWith, slist))
         
     def colliding(self, sprites):
