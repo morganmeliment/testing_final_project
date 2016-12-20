@@ -1701,14 +1701,13 @@ class App(object):
             for sprite2 in App._solidSprites:
                 if sprite2 not in coll_dict:
                     coll_dict[sprite2] = []
-                if (sprite2 not in coll_dict[sprite]) and (sprite != sprite2):
+                if (sprite2 not in coll_dict[sprite]) and (sprite != sprite2) and (sprite._collisionStyle == sprite2._collisionStyle):
                     count = count + 1
-                    #if not (sprite.xmin > sprite2.xmax or sprite.xmax < sprite2.xmin or sprite.ymin > sprite2.ymax or sprite.ymax < sprite2.ymin):
-                    #    coll_dict[sprite].append(sprite2)
-                    #    coll_dict[sprite2].append(sprite)
-                    #    count2 = count2 + 1
-                    #print("collisiondetected: " + str(id(sprite)) + " " + str(id(sprite2)))
-                    if ((sprite.x - sprite2.x)**2 + (sprite.y - sprite2.y)**2) < (sprite.radius + sprite2.radius)**2:
+                    if (sprite._collisionStyle == "rect") and (not (sprite.xmin > sprite2.xmax or sprite.xmax < sprite2.xmin or sprite.ymin > sprite2.ymax or sprite.ymax < sprite2.ymin)):
+                        coll_dict[sprite].append(sprite2)
+                        coll_dict[sprite2].append(sprite)
+                        count2 = count2 + 1
+                    else if (sprite._collisionStyle == "circ") and ((sprite.x - sprite2.x)**2 + (sprite.y - sprite2.y)**2) < (sprite.radius + sprite2.radius)**2:
                         coll_dict[sprite].append(sprite2)
                         coll_dict[sprite2].append(sprite)
                         count2 = count2 + 1
