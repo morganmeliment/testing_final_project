@@ -1707,7 +1707,7 @@ class App(object):
                         coll_dict[sprite].append(sprite2)
                         coll_dict[sprite2].append(sprite)
                         count2 = count2 + 1
-                    else if (sprite._collisionStyle == "circ") and ((sprite.x - sprite2.x)**2 + (sprite.y - sprite2.y)**2) < ((sprite.radius + sprite2.radius)**2):
+                    elif (sprite._collisionStyle == "circ") and ((sprite.x - sprite2.x)**2 + (sprite.y - sprite2.y)**2) < ((sprite.radius + sprite2.radius)**2):
                         coll_dict[sprite].append(sprite2)
                         coll_dict[sprite2].append(sprite)
                         count2 = count2 + 1
