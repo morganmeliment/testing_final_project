@@ -108,10 +108,13 @@ except:
     from sysdeps import *
 
 try:
-    from ggame.pyinput import *
-    didLoadPyinput = True
+    from browser import window, document
+    from javascript import JSObject, JSConstructor
 except:
-    didLoadPyinput = False
+    pass
+
+didLoadPyinput = False
+    
 
 class Frame(object):
     """
