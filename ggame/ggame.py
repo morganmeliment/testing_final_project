@@ -100,6 +100,31 @@ Increasing positive y-coordinates correspond to the downward direction on the
 computer screen. Note that this is **different** from the way you may have learned
 about x and y coordinates in math class!
 
+<script> 
+    function collCheck(spriteDict) {
+        var collDict = {};
+        var sprite, sprite2;
+        for (var n = 0; n < spriteDict.length; n++) {
+            sprite = spriteDict[n];
+            if (collDict[sprite[0]] === undefined) {
+                collDict[sprite[0]] = {};
+            }
+            for (var t = 0; t < spriteDict.length; t++) {
+                sprite2 = spriteDict[t]
+                if (collDict[spriteDict[t][0]] === undefined) {
+                    collDict[spriteDict[t][0]] = {};
+                }
+                if (collDict[sprite[0]][sprite2] === undefined && sprite[0] != sprite2[0] && sprite[1] == sprite2[1]) {
+                    if (sprite[1] == sprite2[1] && !(sprite[2] > sprite2[3] || sprite[3] < sprite2[2] || sprite[4] > sprite2[5] || sprite[5] < sprite2[4])) {
+                        collDict[]
+                    }
+                }    
+            }
+        }
+    } 
+</script>
+
+
 """
 
 try:
@@ -113,8 +138,9 @@ try:
 except:
     pass
 
+document.body.innerHTML = document.body.innerHTML + "<script> function collCheck(spriteDict) { for () } </script>"
 didLoadPyinput = False
-    
+coll_checker = JSConstructor
 
 class Frame(object):
     """
